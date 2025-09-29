@@ -1,68 +1,71 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import ListProduce from "./pages/ListProduce";
-import Dashboard from "./pages/Dashboard"; 
-import Marketplace from "./pages/Marketplace";
-import CropPrediction from "./pages/CropPrediction"; 
-import LearningHub from "./pages/LearningHub"; 
-import ProtectedRoute from "./components/ProtectedRoute";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function App() {
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/layout/Footer";
+import TopBar from "./components/layout/Topbar";
+import { AuthProvider } from "./context/AuthContext";
+// Pages
+import { Outlet } from "react-router-dom";
+import CropPrediction from "./pages/CropPrediction";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import LearningHub from "./pages/LearningHub";
+import ListProduce from "./pages/ListProduce";
+import Login from "./pages/Login";
+import Marketplace from "./pages/Marketplace";
+import Signup from "./pages/Signup";
+import IoTQualityDashboard from "./pages/IoTQualityDashboard";
+// Simple 404 Page
+function NotFound() {
+  return (
+    <h2 style={{ textAlign: "center", marginTop: "2rem" }}>
+      404 - Page Not Found
+    </h2>
+  );
+}
+
+function AppLayout() {
+  return (
+    <div className="min-h-screen flex flex-col bg-emerald-50">
+      <TopBar />
+      <main className="flex-1 pt-[64px] min-h-[80vh]">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
   return (
     <AuthProvider>
       <Router>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/marketplace"
-            element={
-              <ProtectedRoute>
-                <Marketplace />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/marketplace/list"
-            element={
-              <ProtectedRoute>
-                <ListProduce />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/crop-prediction"
-            element={
-              <ProtectedRoute>
-                <CropPrediction />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/learning-hub"
-            element={
-              <ProtectedRoute>
-                <LearningHub />
-              </ProtectedRoute>
-            }
-          />
+          {/* All routes share AppLayout */}
+          <Route element={<AppLayout />}>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Protected routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/marketplace/list" element={<ListProduce />} />
+              <Route path="/crop-prediction" element={<CropPrediction />} />
+              <Route path="/learning-hub" element={<LearningHub />} />
+              <Route path="/iot-quality" element= {<IoTQualityDashboard />} />
+            </Route>
+
+            {/* Fallback */}
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>
   );
 }
-
-export default App;
