@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import Marketplace from "./pages/Marketplace";
 import Signup from "./pages/Signup";
 import IoTQualityDashboard from "./pages/IoTQualityDashboard";
+import AboutUs from "./pages/AboutUs";
 // Simple 404 Page
 function NotFound() {
   return (
@@ -59,6 +60,7 @@ export default function App() {
               <Route path="/crop-prediction" element={<CropPrediction />} />
               <Route path="/learning-hub" element={<LearningHub />} />
               <Route path="/iot-quality" element= {<IoTQualityDashboard />} />
+              <Route path="/About" element={<AboutUs/>}/>
             </Route>
 
             {/* Fallback */}

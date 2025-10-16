@@ -11,7 +11,9 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-gradient-to-t from-green-950 via-green-900 to-green-800 text-gray-300">
+    <footer 
+    id="contact-us-footer" 
+    className="relative bg-gradient-to-t from-green-950 via-green-900 to-green-800 text-gray-300">
       {/* Top glow border */}
       <div className="pointer-events-none absolute -top-1 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400/0 via-emerald-400/60 to-emerald-400/0" />
 

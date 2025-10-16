@@ -10,6 +10,7 @@ import {
   Science as ScienceIcon,
   ShoppingBag as ShoppingBagIcon,
   AccountBalanceWallet as WalletIcon,
+  Info as InfoIcon, 
 } from "@mui/icons-material";
 import {
   AppBar,
@@ -36,22 +37,21 @@ const navActions = [
   { to: "/iot-quality", label: "IoT Quality", icon: <MemoryIcon /> },
   { to: "/payments", label: "Payments", icon: <WalletIcon /> },
   { to: "/learning-hub", label: "Learning Hub", icon: <MenuBookIcon /> },
+  { to: "/About", label: "About Us", icon: <InfoIcon /> },
 ];
 
 const auxActions = [
   { to: "/language", label: "Language", icon: <LanguageIcon /> },
   { to: "/notifications", label: "Notifications", icon: <NotificationsIcon /> },
   { to: "/profile", label: "Profile", icon: <PersonIcon /> },
+   
 ];
 
 // Motion (modern create API)
 const MotionBox = motion.create(Box);
 const MotionIconButton = motion.create(IconButton);
 
-export default function TopBar({
-  appTitle = "Smart AgroConnect",
-  notifCount = 2,
-}) {
+export default function TopBar({ appTitle = "Smart AgroConnect", notifCount = 2 }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,9 +64,9 @@ export default function TopBar({
   const hoverScale = { whileHover: { scale: 1.06 }, whileTap: { scale: 0.98 } };
 
   // Emerald gradient colors
-  const emeraldStart = "#064e3b"; // emerald-900
-  const emeraldMid = "#065f46"; // emerald-800
-  const emeraldEnd = "#047857"; // emerald-700
+  const emeraldStart = "#064e3b";
+  const emeraldMid = "#065f46";
+  const emeraldEnd = "#047857";
 
   return (
     <AppBar
@@ -75,11 +75,10 @@ export default function TopBar({
       sx={{
         zIndex: (t) => t.zIndex.drawer + 1,
         borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
-        // Gradient surface with subtle translucency for frosted feel
-        background: `linear-gradient(180deg, ${alpha(
-          emeraldStart,
-          0.92
-        )} 0%, ${alpha(emeraldMid, 0.9)} 55%, ${alpha(emeraldEnd, 0.88)} 100%)`,
+        background: `linear-gradient(180deg, ${alpha(emeraldStart, 0.92)} 0%, ${alpha(
+          emeraldMid,
+          0.9
+        )} 55%, ${alpha(emeraldEnd, 0.88)} 100%)`,
         backdropFilter: "blur(8px)",
         color: "common.white",
       }}
@@ -99,7 +98,7 @@ export default function TopBar({
       />
 
       <Toolbar sx={{ gap: 1.25, position: "relative" }}>
-        {/* Brand (click → "/") */}
+        {/* Brand */}
         <MotionBox
           {...hoverScale}
           onClick={() => navigate("/")}
@@ -207,56 +206,27 @@ export default function TopBar({
             sx={{ mx: 0.75, borderColor: alpha("#fff", 0.14) }}
           />
 
-          {/* Aux actions */}
-          <Tooltip title="Language" arrow>
-            <MotionIconButton
-              {...hoverScale}
-              component={Link}
-              to="/language"
-              aria-label="Language"
-              size="small"
-              sx={{
-                color: "common.white",
-                "&:hover": { bgcolor: alpha("#ffffff", 0.12) },
-              }}
-            >
-              <LanguageIcon />
-            </MotionIconButton>
-          </Tooltip>
-
-          <Tooltip title="Notifications" arrow>
-            <MotionIconButton
-              {...hoverScale}
-              component={Link}
-              to="/notifications"
-              aria-label="Notifications"
-              size="small"
-              sx={{
-                color: "common.white",
-                "&:hover": { bgcolor: alpha("#ffffff", 0.12) },
-              }}
-            >
-              <Badge color="error" badgeContent={notifCount} overlap="circular">
-                <NotificationsIcon />
-              </Badge>
-            </MotionIconButton>
-          </Tooltip>
-
-          <Tooltip title="Profile" arrow>
-            <MotionIconButton
-              {...hoverScale}
-              component={Link}
-              to="/profile"
-              aria-label="Profile"
-              size="small"
-              sx={{
-                color: "common.white",
-                "&:hover": { bgcolor: alpha("#ffffff", 0.12) },
-              }}
-            >
-              <PersonIcon />
-            </MotionIconButton>
-          </Tooltip>
+          {/* Aux actions including About Us */}
+          {auxActions.map((a) => {
+            const active = isActive(a.to);
+            return (
+              <Tooltip key={a.to} title={a.label} arrow>
+                <MotionIconButton
+                  {...hoverScale}
+                  component={Link}
+                  to={a.to}
+                  aria-label={a.label}
+                  size="small"
+                  sx={{
+                    color: "common.white",
+                    "&:hover": { bgcolor: alpha("#ffffff", 0.12) },
+                  }}
+                >
+                  {a.icon}
+                </MotionIconButton>
+              </Tooltip>
+            );
+          })}
 
           {/* Auth CTA */}
           <Divider
@@ -271,9 +241,7 @@ export default function TopBar({
                 try {
                   await logout?.();
                   navigate("/");
-                } catch {
-                  // optional: toast error
-                }
+                } catch {}
               }}
               size="small"
               startIcon={<LogoutIcon />}
@@ -285,10 +253,7 @@ export default function TopBar({
                 color: "common.white",
                 border: `1px solid ${alpha("#fff", 0.28)}`,
                 bgcolor: alpha("#ffffff", 0.06),
-                "&:hover": {
-                  borderColor: alpha("#fff", 0.45),
-                  bgcolor: alpha("#ffffff", 0.12),
-                },
+                "&:hover": { borderColor: alpha("#fff", 0.45), bgcolor: alpha("#ffffff", 0.12) },
               }}
             >
               Logout
@@ -306,10 +271,7 @@ export default function TopBar({
                 color: "common.white",
                 border: `1px solid ${alpha("#fff", 0.28)}`,
                 bgcolor: alpha("#ffffff", 0.06),
-                "&:hover": {
-                  borderColor: alpha("#fff", 0.45),
-                  bgcolor: alpha("#ffffff", 0.12),
-                },
+                "&:hover": { borderColor: alpha("#fff", 0.45), bgcolor: alpha("#ffffff", 0.12) },
               }}
             >
               Login
