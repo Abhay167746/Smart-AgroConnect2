@@ -6,6 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/layout/Footer";
 import TopBar from "./components/layout/Topbar";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+
 // Pages
 import { Outlet } from "react-router-dom";
 import CropPrediction from "./pages/CropPrediction";
@@ -18,6 +20,8 @@ import Marketplace from "./pages/Marketplace";
 import Signup from "./pages/Signup";
 import IoTQualityDashboard from "./pages/IoTQualityDashboard";
 import AboutUs from "./pages/AboutUs";
+import Buy from "./pages/Buy";
+import Cart from "./pages/Cart";
 // Simple 404 Page
 function NotFound() {
   return (
@@ -42,6 +46,7 @@ function AppLayout() {
 export default function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <Router>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
@@ -59,8 +64,10 @@ export default function App() {
               <Route path="/marketplace/list" element={<ListProduce />} />
               <Route path="/crop-prediction" element={<CropPrediction />} />
               <Route path="/learning-hub" element={<LearningHub />} />
-              <Route path="/iot-quality" element= {<IoTQualityDashboard />} />
-              <Route path="/About" element={<AboutUs/>}/>
+              <Route path="/iot-quality" element={<IoTQualityDashboard />} />
+              <Route path="/About" element={<AboutUs />} />
+              <Route path="/buy" element={<Buy />} />
+              <Route path="/cart" element={<Cart />} />
             </Route>
 
             {/* Fallback */}
@@ -68,6 +75,7 @@ export default function App() {
           </Route>
         </Routes>
       </Router>
+      </CartProvider>
     </AuthProvider>
   );
 }
